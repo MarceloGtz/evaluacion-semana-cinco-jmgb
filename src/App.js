@@ -18,6 +18,7 @@ function App() {
           </Route>
         </Routes>
       </div>
+      <h3 className="name yo">Jesús Marcelo Gutiérrez Bravo  <i className="fa-solid fa-heart"></i>  Html Css Js React</h3>
     </HashRouter>
   );
 }

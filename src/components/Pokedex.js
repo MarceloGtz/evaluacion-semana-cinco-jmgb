@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import PokeCard from './PokeCard';
+import PokedexLogo from '../images/Pokedex-Logo.png'
 import { useNavigate } from 'react-router-dom';
 
 const Pokedex = () => {
@@ -12,7 +13,7 @@ const Pokedex = () => {
     const [types, setTypes] = useState([]);
     const [page, setPage] = useState(1);
     // PAGINACION
-    const pokemonNumber = 16;
+    const pokemonNumber = 42;
     const lastIndex = pokemonNumber * page;
     const firstIndex = lastIndex - pokemonNumber;
     const pokemonPaginated = pokemons?.slice(firstIndex, lastIndex);
@@ -36,33 +37,45 @@ const Pokedex = () => {
     }
     useEffect(() => {
         axios.get('https://pokeapi.co/api/v2/type/')
-            .then(res => setTypes(res.data.results))
+            .then(res => {
+                const typesFiltered = res.data.results.filter(
+                    type => type.name !== 'unknown' && type.name !== 'shadow'
+                )
+                setTypes(typesFiltered)
+            })
     }, [])
-    console.log(pokemons)
     return (
         <div>
-            <h1>Pokedex</h1>
-            <p>Welcome {userName}, here is your Pokedex.</p>
-            <div className="select">
-                <select onChange={handleType}>
-                    {
-                        types.map(type => (
-                            <option key={type.url} value={type.url}>
-                                {type.name}
-                            </option>
-                        ))
-                    }
-                </select>
+            <div className="cuadro"></div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <img className='pokedexlogo' src={PokedexLogo} alt="Pokedex-Logo" />
+            <p className='pokedex__name'>Welcome <span>{userName}</span>, here is your Pokedex.</p>
+            <div className="searchBar">
+                <form className="pokedex-input-ctn" onSubmit={submit}>
+                    <label className='label-dex' htmlFor="search">Type a pokemon or id</label>
+                    <input type="text" id="search" value={pokemonInput} onChange={e => setPokemonInput(e.target.value)} />
+                    <button>Search</button>
+                </form>
+                <div className='pokedex__select-div'>
+                    <select onChange={handleType} className="pokedex__select">
+                        {
+                            types.map(type => (
+                                <option key={type.url} value={type.url}>
+                                    {type.name}
+                                </option>
+                            ))
+                        }
+                    </select>
+                </div>
             </div>
-            <form className="input-ctn" onSubmit={submit}>
-                <label htmlFor="search">Type a pokemon or id</label>
-                <input type="text" id="search" value={pokemonInput} onChange={e => setPokemonInput(e.target.value)} />
-                <button>Search</button>
-            </form>
+
             {page} / {totalPages}
             <div className="pagesButton">
-                <button disabled={page === 1} onClick={() => setPage(page - 1)}>Previous Page</button>
-                <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>Next Page</button>
+                <button disabled={page === 1} onClick={() => setPage(page - 1)}><i className="fa-solid fa-angle-left"></i></button>
+                <button disabled={page === totalPages} onClick={() => setPage(page + 1)}><i className="fa-solid fa-angle-right"></i></button>
             </div>
             <ul className='CardList'>
                 {/* AQUI */}
@@ -75,7 +88,7 @@ const Pokedex = () => {
             <div className="pagesNumber">
                 {pagesNumber.map(pageNumber => <button onClick={() => setPage(pageNumber)}>{pageNumber}</button>)}
             </div>
-        </div>
+        </div >
     );
 };
 

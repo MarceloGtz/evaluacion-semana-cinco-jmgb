@@ -16,7 +16,6 @@ const Login = () => {
         })
         setUserName('')
         navigate('/pokedex')
-        console.log(userName)
     }
 
     return (
