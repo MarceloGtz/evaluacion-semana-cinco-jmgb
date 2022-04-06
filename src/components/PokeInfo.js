@@ -23,8 +23,8 @@ const PokeInfo = () => {
                     <hr />
                     <span>Data</span>
                     <div className="Pokeinfo__type">
-                        <p>Height: {pokemon.height}</p>
-                        <p>Weight: {pokemon.weight}</p>
+                        <p>Height: {pokemon.height}ft</p>
+                        <p>Weight: {pokemon.weight}lb</p>
                     </div>
                     <span>Types</span>
                     <div className="Pokeinfo__type">
